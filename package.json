@@ -5,13 +5,14 @@
   "main": "lib/index.js",
   "preferGlobal": true,
   "bin": {
-    "http-proxy": "./lib/index.js"
+    "http-proxy": "./bin/http-proxy.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/foss-haas/http-proxy-cli.git"
   },
   "files": [
+    "bin/",
     "lib/",
     "LICENSE",
     "README.md",
