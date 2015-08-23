@@ -1,0 +1,41 @@
+{
+  "name": "http-proxy-cli",
+  "version": "0.0.0",
+  "description": "CLI for http-proxy.",
+  "main": "lib/index.js",
+  "preferGlobal": true,
+  "bin": {
+    "http-proxy": "./lib/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foss-haas/http-proxy-cli.git"
+  },
+  "files": [
+    "lib/",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "dist": "babel -d lib src"
+  },
+  "keywords": [
+    "proxy",
+    "http",
+    "cli"
+  ],
+  "author": "Alan Plum <me@pluma.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/foss-haas/http-proxy-cli/issues"
+  },
+  "homepage": "https://github.com/foss-haas/http-proxy-cli#readme",
+  "dependencies": {
+    "http-proxy": "^1.11.1",
+    "yargs": "^3.21.0"
+  },
+  "devDependencies": {
+    "babel": "^5.8.21"
+  }
+}
