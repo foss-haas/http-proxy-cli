@@ -31,13 +31,14 @@ $ http-proxy --help
 Usage: http-proxy [options] [ROUTES]...
 
 Options:
-  --port, -p         Set the port to listen on.                  [default: 8000]
-  --hostname, -h     Set the hostname to listen on.       [default: "localhost"]
-  --forwardHost, -H  Set Host HTTP header to proxy hostname.           [boolean]
-  --verbose, -v      More output. Can be specified up to four times for max
-                     output.                                             [count]
-  --version          Show version number                               [boolean]
-  --help, -?         Show help                                         [boolean]
+  --port, -p       Set the port to listen on.                    [default: 8000]
+  --hostname, -h   Set the hostname to listen on.         [default: "localhost"]
+  --header, -H     Set a specific header.
+  --proxyHost, -P  Set Host HTTP header to proxy hostname.             [boolean]
+  --verbose, -v    More output. Can be specified up to four times for max output
+                   .                                                     [count]
+  --version        Show version number                                 [boolean]
+  --help, -?       Show help                                           [boolean]
 
 Examples:
   http-proxy 8080                           Forwards all requests to the server
@@ -58,4 +59,11 @@ Examples:
                                             localhost:3000.
                                             Ex: GET /static/script.js => http://
                                             192.168.0.1:8080/script.js
+  http-proxy -H "X-Remote-User: admin" 8080 Forwards all requests to the server
+                                            listening on localhost:8080 and sets
+                                            the X-Remote-User header to "admin".
 ```
+
+# License
+
+The MIT/Expat license. For more information, see http://foss-haas.mit-license.org/ or the accompanying [LICENSE](https://github.com/foss-haas/http-proxy-cli/blob/master/LICENSE) file.

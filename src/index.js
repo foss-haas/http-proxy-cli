@@ -4,8 +4,9 @@ import {resolve, relative} from 'path';
 import {parse as parseUrl} from 'url';
 import httpProxy from 'http-proxy';
 import yargs from 'yargs';
-import parse from './parse';
+import parseRoutes from './parse-routes';
 import dedent from './dedent';
+import parseHeaders from './parse-headers';
 
 export default function (args) {
   let argv = yargs
@@ -29,6 +30,10 @@ export default function (args) {
 
     Ex: GET /static/script.js => http://192.168.0.1:8080/script.js
   `))
+  .example('$0 -H "X-Remote-User: admin" 8080', dedent(`
+    Forwards all requests to the server listening on localhost:8080
+    and sets the X-Remote-User header to "admin".
+  `))
   .demand(1, 'Must pass at least one route-URL mapping.')
   .string('_')
   .describe('port', 'Set the port to listen on.')
@@ -37,9 +42,11 @@ export default function (args) {
   .describe('hostname', 'Set the hostname to listen on.')
   .default('hostname', 'localhost')
   .alias('hostname', 'h')
-  .describe('forwardHost', 'Set Host HTTP header to proxy hostname.')
-  .alias('forwardHost', 'H')
-  .boolean('forwardHost')
+  .describe('header', 'Set a specific header.')
+  .alias('header', 'H')
+  .describe('proxyHost', 'Set Host HTTP header to proxy hostname.')
+  .alias('proxyHost', 'P')
+  .boolean('proxyHost')
   .describe('verbose', 'More output. Can be specified up to four times for max output.')
   .alias('verbose', 'v')
   .count('verbose')
@@ -48,7 +55,8 @@ export default function (args) {
   .alias('help', '?')
   .parse(args);
 
-  const routes = parse(argv._);
+  const routes = parseRoutes(argv._);
+  const headers = parseHeaders(argv.header);
 
   var proxy = httpProxy.createProxyServer();
   http.createServer(function (req, res) {
@@ -59,7 +67,10 @@ export default function (args) {
       if (url.indexOf(route.path) === 0) {
         req.url = resolve(route.prefix, relative(route.path, url));
         if (argv.verbose) console.log(`${req.method} ${url} => ${route.target}${req.url}`);
-        if (argv.H) req.headers.host = parseUrl(req.url).hostname;
+        if (argv.proxyHost) req.headers.host = parseUrl(req.url).hostname;
+        Object.keys(headers).forEach(key => {
+          req.headers[key] = headers[key];
+        });
         proxy.web(req, res, {target: route.target}, function (err, resp) {
           if (err) console.error(err.stack);
           else if (argv.verbose >= 3) console.log(resp);
