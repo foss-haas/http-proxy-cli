@@ -47,6 +47,10 @@ export default function (args) {
   .describe('proxyHost', 'Set Host HTTP header to proxy hostname.')
   .alias('proxyHost', 'P')
   .boolean('proxyHost')
+  .describe('secure', 'Set if you want to verify the SSL Certs')
+  .alias('secure', 's')
+  .boolean('secure')
+  .default('secure', true)
   .describe('verbose', 'More output. Can be specified up to four times for max output.')
   .alias('verbose', 'v')
   .count('verbose')
@@ -58,7 +62,7 @@ export default function (args) {
   const routes = parseRoutes(argv._);
   const headers = parseHeaders(argv.header);
 
-  var proxy = httpProxy.createProxyServer();
+  var proxy = httpProxy.createProxyServer({ secure: argv.secure });
   http.createServer(function (req, res) {
     if (argv.verbose >= 4) console.log(req);
     let url = req.url;
