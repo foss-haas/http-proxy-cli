@@ -19,7 +19,7 @@ export default function (args) {
 
     Ex: GET /hello => http://192.168.0.1:8080/app/hello
   `))
-  .example('$0 -H https://www.google.co.uk', dedent(`
+  .example('$0 -P https://www.google.co.uk', dedent(`
     Forwards all requests to the server listening on www.google.co.uk via HTTPS.
 
     Ex: GET / => https://www.google.co.uk/

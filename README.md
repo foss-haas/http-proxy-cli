@@ -47,7 +47,7 @@ Examples:
                                             listening on 192.168.0.1:8080/app.
                                             Ex: GET /hello => http://192.168.0.1
                                             :8080/app/hello
-  http-proxy -H https://www.google.co.uk    Forwards all requests to the server
+  http-proxy -P https://www.google.co.uk    Forwards all requests to the server
                                             listening on www.google.co.uk via
                                             HTTPS.
                                             Ex: GET / => https://www.google.co.
