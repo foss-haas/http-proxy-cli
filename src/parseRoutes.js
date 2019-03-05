@@ -7,7 +7,7 @@ module.exports = function(args) {
   const routes = args.map(arg => {
     if (arg.indexOf("=") === -1) arg = `/=${arg}`;
     const [path, ...tail] = arg.split("=");
-    const target = tail.join("="); // in case anyone uses silly paths
+    let target = tail.join("="); // in case anyone uses silly paths
     if (numeric.test(target)) target = `localhost:${target}`;
     if (!fqUrl.test(target)) target = `http://${target}`;
     const urlObj = parse(target);
