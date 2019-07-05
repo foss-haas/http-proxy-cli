@@ -1,6 +1,6 @@
 {
   "name": "http-proxy-cli",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "CLI for http-proxy.",
   "main": "src/index.js",
   "preferGlobal": true,
