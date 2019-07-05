@@ -64,9 +64,12 @@ module.exports = function(args) {
     .describe("proxyHost", "Set Host HTTP header to proxy hostname.")
     .alias("proxyHost", "P")
     .boolean("proxyHost")
+    .describe("verify", "Verify SSL certificates. Use --no-verify to disable.")
+    .boolean("verify")
+    .default("verify", true)
     .describe(
       "verbose",
-      "More output. Can be specified up to four times for max output."
+      "More output. Can be specified up to four times for maximum output."
     )
     .alias("verbose", "v")
     .count("verbose")
@@ -78,7 +81,7 @@ module.exports = function(args) {
   const routes = parseRoutes(argv._);
   const headers = parseHeaders(argv.header);
 
-  const proxy = httpProxy.createProxyServer();
+  const proxy = httpProxy.createProxyServer({ secure: argv.verify });
   http
     .createServer(function(req, res) {
       if (argv.verbose >= 4) console.log(req);
