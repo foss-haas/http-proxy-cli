@@ -31,39 +31,43 @@ $ http-proxy --help
 Usage: http-proxy [options] [ROUTES]...
 
 Options:
-  --port, -p       Set the port to listen on.                    [default: 8000]
-  --hostname, -h   Set the hostname to listen on.         [default: "localhost"]
-  --header, -H     Set a specific header.
-  --proxyHost, -P  Set Host HTTP header to proxy hostname.             [boolean]
-  --verify         Verify SSL certificates. Use --no-verify to disable.
-                                                       [boolean] [default: true]
-  --verbose, -v    More output. Can be specified up to four times for maximum
-                   output.                                               [count]
-  --version        Show version number                                 [boolean]
-  --help, -?       Show help                                           [boolean]
+  --port, -p            Set the port to listen on.                    [default: 8000]
+  --hostname, -h        Set the hostname to listen on.         [default: "localhost"]
+  --header, -H          Set a specific header.
+  --responseHeader, -R  Set a specific header to the response.
+  --proxyHost, -P       Set Host HTTP header to proxy hostname.             [boolean]
+  --verify              Verify SSL certificates. Use --no-verify to disable.
+                                                            [boolean] [default: true]
+  --verbose, -v         More output. Can be specified up to four times for maximum
+                        output.                                               [count]
+  --version             Show version number                                 [boolean]
+  --help, -?            Show help                                           [boolean]
 
 Examples:
-  http-proxy 8080                           Forwards all requests to the server
-                                            listening on localhost:8080.
-  http-proxy 192.168.0.1:8080/app           Forwards all requests to the server
-                                            listening on 192.168.0.1:8080/app.
-                                            Ex: GET /hello =>
-                                            http://192.168.0.1:8080/app/hello
-  http-proxy -P https://www.google.co.uk    Forwards all requests to the server
-                                            listening on www.google.co.uk via
-                                            HTTPS.
-                                            Ex: GET / =>
-                                            https://www.google.co.uk/
-  http-proxy /static=192.168.0.1:8080 3000  Forwards all requests starting with
-                                            /static to the server listening on
-                                            192.168.0.1:8080 and all other
-                                            requests to the server listening on
-                                            localhost:3000.
-                                            Ex: GET /static/script.js =>
-                                            http://192.168.0.1:8080/script.js
-  http-proxy -H "X-Remote-User: admin" 8000 Forwards all requests to the server
-                                            listening on localhost:8080 and sets
-                                            the X-Remote-User header to "admin".
+  http-proxy 8080                                 Forwards all requests to the server
+                                                  listening on localhost:8080.
+  http-proxy 192.168.0.1:8080/app                 Forwards all requests to the server
+                                                  listening on 192.168.0.1:8080/app.
+                                                  Ex: GET /hello =>
+                                                  http://192.168.0.1:8080/app/hello
+  http-proxy -P https://www.google.co.uk          Forwards all requests to the server
+                                                  listening on www.google.co.uk via
+                                                  HTTPS.
+                                                  Ex: GET / =>
+                                                  https://www.google.co.uk/
+  http-proxy /static=192.168.0.1:8080 3000        Forwards all requests starting with
+                                                  /static to the server listening on
+                                                  192.168.0.1:8080 and all other
+                                                  requests to the server listening on
+                                                  localhost:3000.
+                                                  Ex: GET /static/script.js =>
+                                                  http://192.168.0.1:8080/script.js
+  http-proxy -H "X-Remote-User: admin" 8000       Forwards all requests to the server
+                                                  listening on localhost:8080 and sets
+                                                  the X-Remote-User header to "admin".
+  http-proxy -R "Access-Control-Allow-Origin: *"  8000 Forwards all requests to the server
+                                                  listening on localhost:8080 and sets
+                                                  the Access-Control-Allow-Origin: header to "*" on the response.
 ```
 
 # License

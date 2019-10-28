@@ -51,6 +51,13 @@ module.exports = function(args) {
         and sets the X-Remote-User header to "admin".
       `)
     )
+    .example(
+      '$0 -R "Access-Control-Allow-Origin: *" 8080',
+      dedent(`
+        Forwards all requests to the server listening on localhost:8080
+        and sets the Access-Control-Allow-Origin header to "*" on the response.
+      `)
+    )
     .demand(1, "Must pass at least one route-URL mapping.")
     .string("_")
     .describe("port", "Set the port to listen on.")
@@ -61,6 +68,8 @@ module.exports = function(args) {
     .alias("hostname", "h")
     .describe("header", "Set a specific header.")
     .alias("header", "H")
+    .describe("responseHeader", "Set a specific header to the response.")
+    .alias("responseHeader", "R")
     .describe("proxyHost", "Set Host HTTP header to proxy hostname.")
     .alias("proxyHost", "P")
     .boolean("proxyHost")
@@ -80,8 +89,16 @@ module.exports = function(args) {
 
   const routes = parseRoutes(argv._);
   const headers = parseHeaders(argv.header);
+  const responseHeaders = parseHeaders(argv.responseHeader);
 
   const proxy = httpProxy.createProxyServer({ secure: argv.verify });
+
+  proxy.on("proxyRes", function(proxyRes, req, res) {
+    Object.keys(responseHeaders).forEach(key => {
+      res.setHeader(key, responseHeaders[key]);
+    });
+  });
+
   http
     .createServer(function(req, res) {
       if (argv.verbose >= 4) console.log(req);
