@@ -34,6 +34,9 @@ Options:
   --port, -p       Set the port to listen on.                    [default: 8000]
   --hostname, -h   Set the hostname to listen on.         [default: "localhost"]
   --header, -H     Set a specific header.
+  --corsDisable    Disable CORS by automaticcally handle OPTION request. 
+                   Use --no-corsDisable to disable this feature    
+                                                        [boolean][default: true]
   --proxyHost, -P  Set Host HTTP header to proxy hostname.             [boolean]
   --verify         Verify SSL certificates. Use --no-verify to disable.
                                                        [boolean] [default: true]
