@@ -59,6 +59,8 @@ module.exports = function(args) {
     .describe("hostname", "Set the hostname to listen on.")
     .default("hostname", "localhost")
     .alias("hostname", "h")
+    .describe('corsDisable', 'Enable or disable cors, use --no-corsDisable to enable cors')
+    .default('corsDisable', true)
     .describe("header", "Set a specific header.")
     .alias("header", "H")
     .describe("proxyHost", "Set Host HTTP header to proxy hostname.")
@@ -82,8 +84,44 @@ module.exports = function(args) {
   const headers = parseHeaders(argv.header);
 
   const proxy = httpProxy.createProxyServer({ secure: argv.verify });
+
+  /**
+   * @param req IncomingMessage
+   * @param res ServerResponse
+   */
+  function disableCors(req, res) {
+    if (req.headers['access-control-request-method']) {
+      res.setHeader('access-control-allow-methods', req.headers['access-control-request-method']);
+    }
+
+    if (req.headers['access-control-request-headers']) {
+      res.setHeader('access-control-allow-headers', req.headers['access-control-request-headers']);
+    }
+
+    if (req.headers.origin) {
+      res.setHeader('access-control-allow-origin', req.headers.origin);
+      res.setHeader('access-control-allow-credentials', 'true');
+    }
+  }
+
+  proxy.on('proxyRes', function proxyResHandler(proxyRes, req, res) {
+    if (argv.corsDisable) {
+      disableCors(req, res)
+    }
+  })
+
   http
     .createServer(function(req, res) {
+
+      if (req.method === 'OPTIONS') {
+        if (argv.corsDisable) {
+          disableCors(req, res)
+        }
+        res.writeHead(200);
+        res.end();
+        return;
+      }
+
       if (argv.verbose >= 4) console.log(req);
       const { url } = req;
       for (const route of routes) {
